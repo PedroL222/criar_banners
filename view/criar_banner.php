@@ -176,26 +176,33 @@ if(!isset($_SESSION['id']) && !isset($_SESSION['nome'] )){
 
 
       <!-- Criar banner -->
+
+      <?php 
+        include_once("../config.php");
+        $id = $_SESSION['id'];
+      ?>
       
-      <form method="post" action="../controller/salvar_banner.php">
+      <form enctype="multipart/form-data" method="post" action="../controller/salvar_banner.php">
 
       <label for="nome_ban" class="form-label"><h3>Nome do Banner</h3></label>
       <input name="nome_ban" type="text" class="form-control">
 
       <label for="inputtext5" class="form-label"><h3>Link do Banner</h3></label>
-      <input name="link_ban" type="text" class="form-control">
+      <input name="link_ban" type="url" class="form-control">
 
       <label for="inputtext5" class="form-label"><h3>Texto do Banner</h3></label>
       <input name="texto_ban" type="text" class="form-control">
 
       <label for="img_ban" class="form-label"><h3>Texto do Banner</h3></label><br>
-      <input name="img_ban" type="file" class="form-control">
+      <input name="arquivo" type="file" class="form-control">
+
+      <input name="id" value="<?php echo $id; ?>" style="display: none;">
       
       <br>
       <hr>
       <br>
 
-      <div style="width: 100%; display:flex; justify-content: center;"><button type="submit" class="btn btn-primary ">Submit</button> </div>
+      <div style="width: 100%; display:flex; justify-content: center;"><input type="submit" class="btn btn-primary" value="Enviar"></div>
 
       </form>
 

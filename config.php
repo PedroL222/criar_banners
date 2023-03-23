@@ -3,7 +3,7 @@
 $servidor = "localhost";
 $banco = "criar_banners";
 $userbanco ="root";
-$senha = "";
+$senha = "root";
 
 
 try {

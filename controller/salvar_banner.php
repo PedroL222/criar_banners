@@ -1,40 +1,90 @@
 <?php
 
-include_once '../config.php';
+include_once("../config.php");
 
-// Credênciais do usuário
-
-
+$img_ban = "";
 $nome_ban = $_POST['nome_ban'];
 $link_ban = $_POST['link_ban'];
-$img_ban = $_POST['img_ban'];
 $texto_ban = $_POST['texto_ban'];
+$status_ban = 0;
 
+$id_usuario = $_POST['id'];
 
-//Verificando se a conta já existe
+if(isset($_FILES['arquivo'])){
 
-$sql = $dbh ->prepare("SELECT * FROM T_banner WHERE nome_ban = '$nome_ban'");
-$sql->execute();
+    $arquivo = $_FILES['arquivo'];
 
-$res = $sql->rowCount();
-    if($res==null){
+    $pasta = "../arquivos/";
 
-// Inserindo informações no banco
+    $arquivo = $_FILES['arquivo'];
+    if($arquivo['size']>2097000){
+        die("arquivo muito grande max 2mb");
+    }
+    $nomeArquivo = $arquivo['name'];
 
-        $sql1 = $dbh->prepare("INSERT INTO T_banner (idT_banner,nome_ban,link_ban,img_ban,status_ban,texto_ban)" . "VALUES(null,'$nome_ban',:link_ban,:texto_ban)");
-        $sql1->execute(Array(
-        ':nome_ban' => $nome_ban,
-        ':link_ban' => $link_ban,
-        ':texto_ban' => $texto_ban,
-        ));
-        header("Location: http://localhost/criar_banners/view/index.php");
+    $novoNomeArquivo = uniqid();
+
+    $extensao = strtolower(pathinfo($nomeArquivo,PATHINFO_EXTENSION));
+
+    if($extensao != "jpg" && $extensao != "png" && $extensao != ""){
+        die();
+    }
+
+    $path = $pasta . $novoNomeArquivo . "." . $extensao;
+
+    echo $path;
+
+    $deu_certo = move_uploaded_file($arquivo["tmp_name"], $path );
+
+    if($deu_certo){
+        $img_ban = $path;
+        //Verificando se a conta já existe
+
+        $sql = $dbh ->prepare("SELECT * FROM T_banner WHERE nome_ban = '$nome_ban'");
+        $sql->execute();
+
+        $res = $sql->rowCount();
+            if($res==null){
+
+        // Inserindo informações no banco
+
+        $sql1 = $dbh->prepare("INSERT INTO T_banner (idT_banner,nome_ban,link_ban,img_ban,status_ban,texto_ban,T_usuario_idT_usuario)" . "VALUES(null,'$nome_ban','$link_ban','$img_ban','$status_ban','$texto_ban','$id_usuario')");
+        $sql1->execute();
+        header("Location: http://localhost/criar_banners/view/criar_banner.php");
     }else{
         header("Location: http://localhost/criar_banners/view/registrar_usu.php");
     }
+    }else{
+        $img_ban = "";
+
+        //Verificando se a conta já existe
+
+        $sql = $dbh ->prepare("SELECT * FROM T_banner WHERE nome_ban = '$nome_ban'");
+        $sql->execute();
+
+        $res = $sql->rowCount();
+            if($res==null){
+
+        // Inserindo informações no banco
+
+                $sql1 = $dbh->prepare("INSERT INTO T_banner (idT_banner,nome_ban,link_ban,img_ban,status_ban,texto_ban,T_usuario_idT_usuario)" . "VALUES(null,'$nome_ban','$link_ban','$img_ban','$status_ban','$texto_ban','$id_usuario')");
+                $sql1->execute();
+                header("Location: http://localhost/criar_banners/view/criar_banner.php");
+            }else{
+                header("Location: http://localhost/criar_banners/view/registrar_usu.php");
+            }
+    }
+
+}
+
+
+
+
+
 
 
 //Voltando a página de registro
 
-header("Location: http://localhost/criar_banners/view/registrar_usu.php");
+header("Location: http://localhost/criar_banners/view/criar_banner.php");
 
 ?>
