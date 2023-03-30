@@ -77,12 +77,6 @@ if(isset($_FILES['arquivo'])){
 
 }
 
-
-
-
-
-
-
 //Voltando a página de registro
 
 header("Location: http://localhost/criar_banners/view/criar_banner.php");

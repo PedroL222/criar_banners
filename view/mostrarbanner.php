@@ -1,8 +1,6 @@
 <?php
-
 session_start();
 ob_start();
-
 
 if(!isset($_SESSION['id']) && !isset($_SESSION['nome'] )){
     header('Location: ../index.php');
@@ -10,7 +8,6 @@ if(!isset($_SESSION['id']) && !isset($_SESSION['nome'] )){
 }
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,19 +21,19 @@ if(!isset($_SESSION['id']) && !isset($_SESSION['nome'] )){
 </head>
 <body>
 
-        <?php
+    <?php
 
-            include_once("../config.php");
-            $id = $_SESSION['id'];
+        include_once("../config.php");
+        $id = $_SESSION['id'];
 
-            $sql2 = "SELECT * FROM T_banner WHERE T_usuario_idT_usuario = $id";
-            $exec2 = $dbh->prepare($sql2);
-            $res2 = $exec2->execute();
-            $itens = $exec2->fetchAll();
+        $sql2 = "SELECT * FROM T_banner WHERE T_usuario_idT_usuario = $id";
+        $exec2 = $dbh->prepare($sql2);
+        $res2 = $exec2->execute();
+        $itens = $exec2->fetchAll();
 
-            foreach($itens as $linhas){
+        foreach($itens as $linhas){
 
-        ?>
+    ?>
 
     <div id="banner">
     <h1 id="banner-text"><?php echo $linhas['texto_ban'] ?></h1>
@@ -44,6 +41,11 @@ if(!isset($_SESSION['id']) && !isset($_SESSION['nome'] )){
     </a>
     <img id="banner-image" src="<?php echo $linhas['img_ban'] ?>" alt="Imagem do Banner" />
     </div>
+
+    <form method="post" action="./editar_banner.php">
+        <input name="id_banner" id="bnt_editar" value="<?php echo $linhas['idT_banner']; ?>" style="display: none;">
+        <div style="width: 100%; display:flex; justify-content: center; margin-top:20px;"><button type="submit" class="btn btn-primary">Editar</button></div>
+    </form>
 
     <?php } ?>
 

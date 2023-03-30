@@ -58,9 +58,8 @@ if(!isset($_SESSION['id']) && !isset($_SESSION['nome'] )){
           <div style="display:flex; align-items: center;">
             <h3><a class="opacity-5 text-dark" href="./criar_banner.php">Criar Banner</a></h3>------
             <h3><a class="opacity-5 text-dark" href="./criar_menu.php">Criar Menu</a></h3>------
-            <h3><a class="opacity-5 text-dark" href="./mostrarbanner.php">Mostrar seus Banners</a></h3>>------
+            <h3><a class="opacity-5 text-dark" href="./mostrarbanner.php">Mostrar seus Banners</a></h3>------
             <h3><a class="opacity-5 text-dark" href="./mostrarbanner.php">Editar Banners</a></h3>
-            
             </div>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
@@ -176,29 +175,46 @@ if(!isset($_SESSION['id']) && !isset($_SESSION['nome'] )){
       <?php 
         include_once("../config.php");
         $id = $_SESSION['id'];
+
+        $id_banner = $_POST['id_banner'];
+
+        $query_editar = $dbh->query("SELECT * FROM T_banner WHERE idT_banner = $id_banner");
+        foreach($query_editar as $linhas){
+
+        
       ?>
-      
-      <form enctype="multipart/form-data" method="post" action="../controller/salvar_banner.php">
+
+      <form enctype="multipart/form-data" method="post" action="../controller/editar_banner.php">
 
       <label for="nome_ban" class="form-label"><h3>Nome do Banner</h3></label>
-      <input name="nome_ban" type="text" class="form-control">
+      <input name="nome_ban" type="text" class="form-control" value="<?php echo $linhas['nome_ban'] ?>">
 
       <label for="inputtext5" class="form-label"><h3>Link do Banner</h3></label>
-      <input name="link_ban" type="url" class="form-control">
+      <input name="link_ban" type="url" class="form-control" value="<?php echo $linhas['link_ban'] ?>">
 
       <label for="inputtext5" class="form-label"><h3>Texto do Banner</h3></label>
-      <input name="texto_ban" type="text" class="form-control">
+      <input name="texto_ban" type="text" class="form-control" value="<?php echo $linhas['texto_ban'] ?>">
 
       <label for="img_ban" class="form-label"><h3>Imagem do Banner</h3></label><br>
-      <input name="arquivo" type="file" class="form-control">
+      <input name="arquivo" type="file" class="form-control" value="<?php echo $linhas['img_ban'] ?>">
 
-      <input name="id" value="<?php echo $id; ?>" style="display: none;">
+      <input name="id_banner" value="<?php echo $id_banner; ?>" style="display: none;">
+      <input name="id_banner" value="<?php echo $id_banner; ?>" style="display: none;">
+
+      <?php } ?>
       
       <br>
       <hr>
       <br>
 
       <div style="width: 100%; display:flex; justify-content: center;"><input type="submit" class="btn btn-primary" value="Enviar"></div>
+
+      </form>
+
+      <form method="post" action="../controller/deletar_banner.php">
+
+      <input name="id_banner" value="<?php echo $id_banner; ?>" style="display: none;">
+      <div style="width: 100%; display:flex; justify-content: center;"><input type="submit" class="btn btn-primary" value="Deletar"></div>
 
       </form>
 
